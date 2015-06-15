@@ -36,8 +36,67 @@
     <name>WildFly: Undertow</name>
 
     <packaging>jar</packaging>
+    
+    <build>
+    	<plugins>
+    		<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.7</version>
+                <configuration>
+                    <complianceLevel>1.7</complianceLevel>
+                    <includes>
+                        <include>**/*.java</include>
+                        <include>**/*.aj</include>
+                    </includes>
+                    <aspectDirectory>src/main/aspect</aspectDirectory>
+                    <testAspectDirectory>src/test/aspect</testAspectDirectory>
+                    <XaddSerialVersionUID>true</XaddSerialVersionUID>
+                    <showWeaveInfo>true</showWeaveInfo>
+                    <proceedOnError>true</proceedOnError>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.wildfly</groupId>
+                            <artifactId>wildfly-logging-processor</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                    <!-- <weaveDependencies>
+                        <weaveDependency>
+			                 <groupId>io.undertow</groupId>
+                             <artifactId>undertow-servlet</artifactId>
+			            </weaveDependency>
+                    </weaveDependencies> -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile_with_aspectj</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <!-- <execution>
+                        <id>test-compile_with_aspectj</id>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution> -->
+                </executions>
+                <dependencies>
+                    <dependency>
+		                <groupId>org.aspectj</groupId>
+		                <artifactId>aspectjtools</artifactId>
+		                <version>${version.org.aspectj}</version>
+		            </dependency>
+                </dependencies>
+            </plugin>
+    	</plugins>
+    </build>
 
     <dependencies>
+        <dependency>
+	        <groupId>org.aspectj</groupId>
+	        <artifactId>aspectjrt</artifactId>
+	    </dependency>
         <dependency>
             <groupId>org.jboss.common</groupId>
             <artifactId>jboss-common-beans</artifactId>
@@ -57,6 +116,10 @@
         <dependency>
             <groupId>org.wildfly.core</groupId>
             <artifactId>wildfly-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-logging-processor</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wildfly.core</groupId>
